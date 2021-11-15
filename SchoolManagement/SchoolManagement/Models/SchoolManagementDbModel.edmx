@@ -10,8 +10,8 @@
             <PropertyRef Name="CourseId" />
           </Key>
           <Property Name="CourseId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Title" Type="nvarchar" MaxLength="50" />
-          <Property Name="Credits" Type="int" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Credits" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Enrollment">
           <Key>
@@ -31,6 +31,7 @@
           <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
           <Property Name="EnrollmentDate" Type="datetime" />
           <Property Name="MiddleName" Type="nvarchar" MaxLength="50" />
+          <Property Name="DateOfBirth" Type="datetime" />
         </EntityType>
         <Association Name="FK_dbo_Enrollment_dbo_Course_CourseID">
           <End Role="Course" Type="Self.Course" Multiplicity="1">
@@ -82,8 +83,8 @@
             <PropertyRef Name="CourseId" />
           </Key>
           <Property Name="CourseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Credits" Type="Int32" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Credits" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Enrollment" Relationship="Self.FK_dbo_Enrollment_dbo_Course_CourseID" FromRole="Course" ToRole="Enrollment" />
         </EntityType>
         <EntityType Name="Enrollment">
@@ -107,6 +108,7 @@
           <Property Name="EnrollmentDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Enrollment" Relationship="Self.FK_dbo_Enrollment_dbo_Student_StudentID" FromRole="Student" ToRole="Enrollment" />
           <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DateOfBirth" Type="DateTime" Precision="3" />
         </EntityType>
         <Association Name="FK_dbo_Enrollment_dbo_Course_CourseID">
           <End Role="Course" Type="Self.Course" Multiplicity="1">
@@ -177,6 +179,7 @@
           <EntitySetMapping Name="Student">
             <EntityTypeMapping TypeName="SchoolManagementDataBaseModel.Student">
               <MappingFragment StoreEntitySet="Student">
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
                 <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
                 <ScalarProperty Name="StudentID" ColumnName="StudentID" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
