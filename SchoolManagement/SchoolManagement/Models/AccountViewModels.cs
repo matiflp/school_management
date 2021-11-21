@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SchoolManagement.Models
@@ -49,9 +50,8 @@ namespace SchoolManagement.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Correo electrónico")]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Display(Name = "Usuario")]
+        public string Username { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -66,8 +66,13 @@ namespace SchoolManagement.Models
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Correo electrónico")]
+        [Display(Name = "Correo electrónico / Nombre del Usuario")]
         public string Email { get; set; }
+
+        [Required]
+        [DataType(DataType.DateTime)]
+        [Display(Name = "Nacimiento")]
+        public DateTime BirthDate { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "El número de caracteres de {0} debe ser al menos {2}.", MinimumLength = 6)]
@@ -79,6 +84,14 @@ namespace SchoolManagement.Models
         [Display(Name = "Confirmar contraseña")]
         [Compare("Password", ErrorMessage = "La contraseña y la contraseña de confirmación no coinciden.")]
         public string ConfirmPassword { get; set; }
+    
+        [Required]
+        [Display(Name = "User Role")]
+        public string UserRole { get; set; }
+
+        [Required]
+        [Display(Name = "Username")]
+        public string Username { get; set; }
     }
 
     public class ResetPasswordViewModel
