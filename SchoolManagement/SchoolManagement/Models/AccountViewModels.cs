@@ -66,7 +66,7 @@ namespace SchoolManagement.Models
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Correo electrónico / Nombre del Usuario")]
+        [Display(Name = "Correo electrónico")]
         public string Email { get; set; }
 
         [Required]
@@ -86,11 +86,11 @@ namespace SchoolManagement.Models
         public string ConfirmPassword { get; set; }
     
         [Required]
-        [Display(Name = "User Role")]
+        [Display(Name = "Rol")]
         public string UserRole { get; set; }
 
         [Required]
-        [Display(Name = "Username")]
+        [Display(Name = "Usuario")]
         public string Username { get; set; }
     }
 
