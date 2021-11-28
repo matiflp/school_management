@@ -22,6 +22,14 @@ namespace SchoolManagement.Controllers
             return View(await enrollment.ToListAsync());
         }
 
+        public PartialViewResult _enrollmentPartial(int? courseid)
+        {
+            var enrollments = db.Enrollment.Where(q => q.CourseID == courseid)
+                .Include(e => e.Course)
+                .Include(e => e.Student);
+            return PartialView(enrollments);
+        }
+
         // GET: Enrollments/Details/5
         public async Task<ActionResult> Details(int? id)
         {
@@ -64,6 +72,26 @@ namespace SchoolManagement.Controllers
             ViewBag.StudentID = new SelectList(db.Student, "StudentID", "LastName", enrollment.StudentID);
             ViewBag.LecturerId = new SelectList(db.Lecturers, "Id", "First_Name", enrollment.LecturerId);
             return View(enrollment);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> AddStudent([Bind(Include = "CourseID,StudentID")] Enrollment enrollment)
+        {
+            try
+            {
+                var isEnrolled = db.Enrollment.Any(q => q.CourseID == enrollment.CourseID && q.StudentID == enrollment.StudentID);
+                if (ModelState.IsValid && !isEnrolled)
+                {
+                    db.Enrollment.Add(enrollment);
+                    await db.SaveChangesAsync();
+                    return Json(new { IsSuccess = true, Message = "Student Added Sucessfully" }, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new { IsSuccess = false, Message = "Student Was Not Added Sucessfully" }, JsonRequestBehavior.AllowGet);
+            }
+            catch(Exception)
+            {
+                return Json(new { IsSuccess = false, Message = "System Failure: Please Contact Your Administrator" }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         // GET: Enrollments/Edit/5
@@ -127,6 +155,17 @@ namespace SchoolManagement.Controllers
             db.Enrollment.Remove(enrollment);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public JsonResult GetStudents(string term)
+        {
+            var students = db.Student.Select(q => new
+            {
+                Name = q.FirstName + " " + q.LastName,
+                Id = q.StudentID
+            }).Where(q => q.Name.Contains(term));
+            return Json(students, JsonRequestBehavior.AllowGet);
         }
 
         protected override void Dispose(bool disposing)
